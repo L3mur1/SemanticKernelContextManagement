@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.ChatCompletion;
-using Microsoft.SemanticKernel.Connectors.OpenAI;
 using SemanticKernelContextManagement.Plugins;
 using SemanticKernelContextManagement.Services;
 
@@ -32,17 +30,9 @@ IKernelBuilder kernelBuilder = Kernel
     .AddAzureOpenAIChatCompletion(modelId, endpoint, apiKey);
 
 Kernel kernel = kernelBuilder.Build();
-IChatCompletionService chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
 kernel.Plugins.AddFromType<ProductsPlugin>("Products");
 
-OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
-{
-    FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
-};
-
 var recommendationService = new ProductRecommendationsService(kernel);
-
-var history = new ChatHistory();
 
 while (true)
 {
@@ -54,13 +44,6 @@ while (true)
         break;
     }
 
-    history.AddUserMessage(userInput);
-
-    var result = await chatCompletionService.GetChatMessageContentAsync(
-        history,
-        executionSettings: openAIPromptExecutionSettings,
-        kernel: kernel);
-
-    Console.WriteLine("Assistant > " + result);
-    history.AddMessage(result.Role, result.Content ?? string.Empty);
+    var recommendation = await recommendationService.GetRecommendationAsync(userInput);
+    Console.WriteLine("Assistant > " + recommendation);
 }
