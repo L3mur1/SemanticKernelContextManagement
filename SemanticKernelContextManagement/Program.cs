@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
-using SemanticKernelContextManagement.Plugins;
-using SemanticKernelContextManagement.Services;
+using SemanticKernelContextManagement.Products.Plugins;
+using SemanticKernelContextManagement.Products.Services;
 
 IConfigurationRoot config = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")

@@ -2,7 +2,7 @@ using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
-namespace SemanticKernelContextManagement.Services
+namespace SemanticKernelContextManagement.Products.Services
 {
     public class ProductRecommendationsService(Kernel kernel)
     {
