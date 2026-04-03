@@ -1,0 +1,5 @@
+{
+  "name": "BalanceBook 14",
+  "shortSummary": "Balanced laptop offering a mix of performance and portability.",
+  "longDescription": "BalanceBook 14 is designed to offer a well-rounded balance between performance and portability. It sits between lightweight ultrabooks and high-performance machines, making it a versatile choice for many users.\n\nSpecifications:\n- CPU: AMD Ryzen 7\n- RAM: 16 GB\n- Storage: 512 GB SSD\n- Display: 14-inch IPS, 1920x1200\n- Battery life: up to 10 hours\n- Weight: 1.5 kg\n\nThis laptop performs well in most development scenarios, including typical .NET applications, web development, and moderate multitasking. It provides enough power for daily work while remaining relatively portable.\n\nThe battery life is sufficient for a full working day in mixed usage, and the device remains comfortable to carry without being too heavy.\n\nWhile it does not match the raw performance of high-end machines, it avoids the limitations of ultra-light devices, making it a safe middle-ground option.\n\nBalanceBook 14 is ideal for developers who want a reliable everyday machine without extreme trade-offs in either performance or mobility."
+}

@@ -1,0 +1,5 @@
+{
+  "name": "UltraLite 13",
+  "shortSummary": "Ultra-portable laptop focused on mobility and battery life.",
+  "longDescription": "UltraLite 13 is an extremely lightweight and portable laptop designed for users who value mobility above all else. With its compact size and minimal weight, it is perfect for working on the move.\n\nSpecifications:\n- CPU: Intel Core i5 (11th Gen)\n- RAM: 8 GB\n- Storage: 256 GB SSD\n- Display: 13.3-inch IPS, 1920x1080\n- Battery life: up to 15 hours\n- Weight: 1.0 kg\n\nThis device is well suited for light development tasks, note-taking, browsing, and working with cloud-based tools. It performs adequately with simple coding projects and lightweight applications.\n\nHowever, due to limited RAM and an older processor, it may struggle with larger .NET solutions, multiple containers, or heavy multitasking. Developers working on more complex systems may find performance insufficient.\n\nThe small form factor makes it extremely convenient for travel, and the long battery life allows for full-day work without charging.\n\nUltraLite 13 is best suited for users who prioritize portability and battery life over raw performance."
+}
