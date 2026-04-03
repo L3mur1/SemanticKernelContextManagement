@@ -1,4 +1,4 @@
-﻿using Microsoft.SemanticKernel;
+using Microsoft.SemanticKernel;
 using SemanticKernelContextManagement.Models;
 using System.ComponentModel;
 using System.Text.Json;
@@ -7,7 +7,12 @@ namespace SemanticKernelContextManagement.Plugins
 {
     public class ProductsPlugin
     {
-        private readonly JsonSerializerOptions jsonSerializerOptions = new JsonSerializerOptions { WriteIndented = true };
+        private static readonly JsonSerializerOptions ProductJsonOptions = new()
+        {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true,
+        };
+
         private readonly List<Product> products;
 
         public ProductsPlugin()
@@ -25,7 +30,7 @@ namespace SemanticKernelContextManagement.Plugins
                 return $"Product not found: {productName}";
             }
 
-            return JsonSerializer.Serialize(product, jsonSerializerOptions);
+            return JsonSerializer.Serialize(product, ProductJsonOptions);
         }
 
         [KernelFunction]
@@ -38,7 +43,7 @@ namespace SemanticKernelContextManagement.Plugins
                 p.ShortSummary,
             });
 
-            return JsonSerializer.Serialize(productSummaries, jsonSerializerOptions);
+            return JsonSerializer.Serialize(productSummaries, ProductJsonOptions);
         }
 
         private static List<Product> LoadProducts()
@@ -55,7 +60,7 @@ namespace SemanticKernelContextManagement.Plugins
             {
                 var json = File.ReadAllText(file);
 
-                var product = JsonSerializer.Deserialize<Product>(json)
+                var product = JsonSerializer.Deserialize<Product>(json, ProductJsonOptions)
                     ?? throw new InvalidOperationException($"Failed to deserialize product from file: {file}");
 
                 products.Add(product);
