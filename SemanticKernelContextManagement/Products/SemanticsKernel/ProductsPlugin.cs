@@ -3,7 +3,7 @@ using SemanticKernelContextManagement.Products.Models;
 using System.ComponentModel;
 using System.Text.Json;
 
-namespace SemanticKernelContextManagement.Products.Plugins
+namespace SemanticKernelContextManagement.Products.SemanticsKernel
 {
     public class ProductsPlugin
     {

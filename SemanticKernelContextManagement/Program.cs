@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
-using SemanticKernelContextManagement.Products.Plugins;
+using SemanticKernelContextManagement.Products.SemanticsKernel;
 using SemanticKernelContextManagement.Products.Services;
 
 IConfigurationRoot config = new ConfigurationBuilder()
