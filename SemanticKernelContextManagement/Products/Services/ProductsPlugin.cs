@@ -1,9 +1,9 @@
 using Microsoft.SemanticKernel;
-using SemanticKernelContextManagement.Models;
+using SemanticKernelContextManagement.Products.Models;
 using System.ComponentModel;
 using System.Text.Json;
 
-namespace SemanticKernelContextManagement.Framework.Kernel.Plugins
+namespace SemanticKernelContextManagement.Products.Services
 {
     public class ProductsPlugin
     {

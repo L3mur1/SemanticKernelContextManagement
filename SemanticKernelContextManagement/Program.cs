@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
 using SemanticKernelContextManagement.Framework.Kernel.Filters;
-using SemanticKernelContextManagement.Framework.Kernel.Plugins;
+using SemanticKernelContextManagement.Metrics.Services;
+using SemanticKernelContextManagement.Products.Services;
 using SemanticKernelContextManagement.Services;
 
 IConfigurationRoot config = new ConfigurationBuilder()
@@ -32,7 +33,7 @@ IKernelBuilder kernelBuilder = Kernel
 
 Kernel kernel = kernelBuilder.Build();
 kernel.Plugins.AddFromType<ProductsPlugin>("Products");
-kernel.FunctionInvocationFilters.Add(new MetricsChatFilter());
+kernel.FunctionInvocationFilters.Add(new TurnMetricsFunctionInvocationFilter());
 
 var recommendationService = new ProductRecommendationsService(kernel);
 

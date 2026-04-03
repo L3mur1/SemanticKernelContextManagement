@@ -1,4 +1,4 @@
-﻿namespace SemanticKernelContextManagement.Models
+﻿namespace SemanticKernelContextManagement.Products.Models
 {
     public record Product(
         string Name,

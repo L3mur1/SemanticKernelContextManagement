@@ -1,8 +1,8 @@
 ﻿using Microsoft.SemanticKernel;
 
-namespace SemanticKernelContextManagement.Framework.Kernel.Filters
+namespace SemanticKernelContextManagement.Metrics.Services
 {
-    public class MetricsChatFilter : IFunctionInvocationFilter
+    public class TurnMetricsFunctionInvocationFilter : IFunctionInvocationFilter
     {
         public Task OnFunctionInvocationAsync(FunctionInvocationContext context, Func<FunctionInvocationContext, Task> next)
         {
