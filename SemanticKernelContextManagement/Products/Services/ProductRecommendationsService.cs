@@ -1,6 +1,8 @@
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.SemanticKernel.Connectors.OpenAI;
+using OpenAI.Chat;
+using SemanticKernelContextManagement.Models;
 
 namespace SemanticKernelContextManagement.Products.Services
 {
@@ -14,19 +16,21 @@ namespace SemanticKernelContextManagement.Products.Services
             """;
 
         private readonly IChatCompletionService chatCompletionService = kernel.GetRequiredService<IChatCompletionService>();
-        private readonly ChatHistory history = CreateHistory();
 
         private readonly OpenAIPromptExecutionSettings openAIPromptExecutionSettings = new()
         {
             FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
         };
 
+        public ChatHistory ChatHistory { get; } = CreateHistory();
+
         public async Task<string> GetRecommendationAsync(string userInput)
         {
-            history.AddUserMessage(userInput);
+            var beforeInteractionCount = ChatHistory.Count;
+            ChatHistory.AddUserMessage(userInput);
 
             var result = await chatCompletionService.GetChatMessageContentAsync(
-                history,
+                ChatHistory,
                 executionSettings: openAIPromptExecutionSettings,
                 kernel: kernel);
 
@@ -35,7 +39,9 @@ namespace SemanticKernelContextManagement.Products.Services
                 throw new InvalidOperationException($"{nameof(chatCompletionService)} did not return any content.");
             }
 
-            history.AddAssistantMessage(result.Content);
+            ChatHistory.Add(result);
+
+            NotifyTokenUsed(beforeInteractionCount);
             return result.Content;
         }
 
@@ -44,6 +50,29 @@ namespace SemanticKernelContextManagement.Products.Services
             var history = new ChatHistory();
             history.AddSystemMessage(SystemPrompt);
             return history;
+        }
+
+        private void NotifyTokenUsed(int beforeInteractionCount)
+        {
+            var newMessages = ChatHistory.Skip(beforeInteractionCount).ToList();
+
+            var inputSum = 0;
+            var outputSum = 0;
+            var totalSum = 0;
+
+            foreach (var message in newMessages)
+            {
+                if (message.Metadata?.TryGetValue("Usage", out var usageObj) == true
+                    && usageObj is ChatTokenUsage usage)
+                {
+                    inputSum += usage.InputTokenCount;
+                    outputSum += usage.OutputTokenCount;
+                    totalSum += usage.TotalTokenCount;
+                }
+            }
+
+            var tokenUsage = new TokenUsage(inputSum, outputSum, totalSum, "product-recommendation");
+            TokenUsage.Publish(tokenUsage);
         }
     }
 }

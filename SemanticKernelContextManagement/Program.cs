@@ -1,5 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.SemanticKernel;
+using SemanticKernelContextManagement.Analysis;
 using SemanticKernelContextManagement.Products.SemanticsKernel;
 using SemanticKernelContextManagement.Products.Services;
 
@@ -32,10 +33,15 @@ IKernelBuilder kernelBuilder = Kernel
 Kernel kernel = kernelBuilder.Build();
 kernel.Plugins.AddFromType<ProductsPlugin>("Products");
 
+var tokenUsageService = new TokenUsageService();
 var recommendationService = new ProductRecommendationsService(kernel);
 
+int turnIndex = 0;
 while (true)
 {
+    turnIndex++;
+    tokenUsageService.RecordTurnUsage(turnIndex);
+
     Console.Write("User > ");
     var userInput = Console.ReadLine();
     if (userInput == null)
@@ -47,3 +53,5 @@ while (true)
     var recommendation = await recommendationService.GetRecommendationAsync(userInput);
     Console.WriteLine("Assistant > " + recommendation);
 }
+
+tokenUsageService.Dispose();
