@@ -36,6 +36,26 @@ kernel.Plugins.AddFromType<ProductsPlugin>("Products");
 var tokenUsageService = new TokenUsageService();
 var recommendationService = new ProductRecommendationsService(kernel);
 
+Console.WriteLine("Welcome to agentic shop assistant demo!");
+Console.WriteLine("Available token management strategies are:");
+Console.WriteLine("1. No management (default)");
+Console.WriteLine("2. LM Summarization every 5 turns");
+Console.WriteLine("3. Observation masking");
+Console.WriteLine("4. LM Summarization every 5 turns and observation masking");
+int strategy = 0;
+while (strategy < 1 || strategy > 4)
+{
+    Console.Write("Enter the number of the strategy you want to use: ");
+    var input = Console.ReadLine();
+    if (!int.TryParse(input, out strategy) || strategy < 1 || strategy > 4)
+    {
+        Console.WriteLine("Invalid input. Please enter a number between 1 and 4.");
+    }
+}
+
+Console.WriteLine($"You have selected strategy {strategy}.");
+Console.WriteLine("Name a product or ask for a recommendation in any language.");
+
 int turnIndex = 0;
 while (true)
 {
@@ -44,7 +64,7 @@ while (true)
 
     Console.Write("User > ");
     var userInput = Console.ReadLine();
-    if (userInput == null)
+    if (string.IsNullOrWhiteSpace(userInput) || userInput.Equals("q", StringComparison.OrdinalIgnoreCase))
     {
         Console.WriteLine("Exiting...");
         break;

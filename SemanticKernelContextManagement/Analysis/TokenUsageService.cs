@@ -29,12 +29,12 @@ namespace SemanticKernelContextManagement.Analysis
             Directory.CreateDirectory(resultsPath);
             if (!File.Exists(filePath))
             {
-                File.AppendAllText(filePath, "TurnIndex,InputTokens,OutputTokens,TotalTokens,Description");
+                File.AppendAllText(filePath, "Session,TurnIndex,InputTokens,OutputTokens,TotalTokens,Description");
             }
 
             File.AppendAllText(
                 filePath,
-                $"{Environment.NewLine}{currentTurnIndex},{usage.InputTokens},{usage.OutputTokens},{usage.TotalTokens},{usage.Description}");
+                $"{Environment.NewLine}{sessionTimeStamp:yyyyMMdd_HHmmss},{currentTurnIndex},{usage.InputTokens},{usage.OutputTokens},{usage.TotalTokens},{usage.Description}");
         }
     }
 }
