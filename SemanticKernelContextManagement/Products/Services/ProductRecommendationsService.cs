@@ -6,7 +6,7 @@ using SemanticKernelContextManagement.Models;
 
 namespace SemanticKernelContextManagement.Products.Services
 {
-    public class ProductRecommendationsService(Kernel kernel)
+    public class ProductRecommendationsService(Kernel kernel, bool useSummarization, bool useObservationMasking)
     {
         private const string SystemPrompt = """
             You are a shop assistant that recommends products from our catalog.
