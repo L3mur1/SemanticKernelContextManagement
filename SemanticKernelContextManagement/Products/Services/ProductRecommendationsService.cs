@@ -8,6 +8,8 @@ namespace SemanticKernelContextManagement.Products.Services
 {
     public class ProductRecommendationsService(Kernel kernel, bool useSummarization, bool useObservationMasking)
     {
+        private const string ObservationMaskedPlaceholder = "[TOOL_OBSERVATION_MASKED]";
+
         private const string SystemPrompt = """
             You are a shop assistant that recommends products from our catalog.
             Use the Products plugin (GetProducts, GetProductDetails) to read real catalog data before suggesting items.
@@ -40,8 +42,13 @@ namespace SemanticKernelContextManagement.Products.Services
             }
 
             ChatHistory.Add(result);
+            NotifyProductRecommendationsTokenUsed(beforeInteractionCount);
 
-            NotifyTokenUsed(beforeInteractionCount);
+            if (useObservationMasking)
+            {
+                MaskObservations();
+            }
+
             return result.Content;
         }
 
@@ -52,7 +59,41 @@ namespace SemanticKernelContextManagement.Products.Services
             return history;
         }
 
-        private void NotifyTokenUsed(int beforeInteractionCount)
+        private void MaskObservations()
+        {
+            var toolMessages = ChatHistory.Where(m => m.Role == AuthorRole.Tool);
+            foreach (var message in toolMessages)
+            {
+                message.Content = ObservationMaskedPlaceholder;
+
+                if (message.Items.Count == 0)
+                {
+                    message.Items.Add(new TextContent(ObservationMaskedPlaceholder));
+                    continue;
+                }
+
+                var originals = message.Items.ToArray();
+                message.Items.Clear();
+
+                foreach (var item in originals)
+                {
+                    if (item is FunctionResultContent functionResult)
+                    {
+                        message.Items.Add(new FunctionResultContent(
+                            functionResult.FunctionName,
+                            functionResult.PluginName,
+                            functionResult.CallId,
+                            ObservationMaskedPlaceholder));
+                    }
+                    else
+                    {
+                        message.Items.Add(new TextContent(ObservationMaskedPlaceholder));
+                    }
+                }
+            }
+        }
+
+        private void NotifyProductRecommendationsTokenUsed(int beforeInteractionCount)
         {
             var newMessages = ChatHistory.Skip(beforeInteractionCount).ToList();
 
