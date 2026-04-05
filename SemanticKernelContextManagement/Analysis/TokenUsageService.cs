@@ -2,18 +2,12 @@ using SemanticKernelContextManagement.Models;
 
 namespace SemanticKernelContextManagement.Analysis
 {
-    public sealed class TokenUsageService : IDisposable
+    public sealed class TokenUsageService(string experimentName) : IDisposable
     {
         private readonly string resultsPath = Path.Combine(AppContext.BaseDirectory, "Results");
         private readonly DateTimeOffset sessionTimeStamp = DateTimeOffset.UtcNow;
         private int currentTurnIndex;
-        private string experimentName;
         private IDisposable? sub;
-
-        public TokenUsageService(string experimentName)
-        {
-            this.experimentName = experimentName;
-        }
 
         public void Dispose()
         {
