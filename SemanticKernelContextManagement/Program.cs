@@ -36,9 +36,9 @@ kernel.Plugins.AddFromType<ProductsPlugin>("Products");
 Console.WriteLine("Welcome to agentic shop assistant demo!");
 Console.WriteLine("Available token management strategies are:");
 Console.WriteLine("1. No management");
-Console.WriteLine("2. LM Summarization every 5 turns");
+Console.WriteLine("2. LM Summarization every 10 turns");
 Console.WriteLine("3. Observation masking");
-Console.WriteLine("4. LM Summarization every 5 turns and observation masking");
+Console.WriteLine("4. LM Summarization every 10 turns and observation masking");
 int strategy = 0;
 while (strategy < 1 || strategy > 4)
 {

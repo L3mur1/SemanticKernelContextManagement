@@ -63,7 +63,7 @@ namespace SemanticKernelContextManagement.Products.Services
             if (useSummarization)
             {
                 var numberOfTurnsWithUser = ChatHistory.Count(c => c.Role == AuthorRole.User);
-                if (numberOfTurnsWithUser % 5 == 0)
+                if (numberOfTurnsWithUser % 10 == 0)
                 {
                     await SummarizeChatAsync();
                 }
