@@ -33,8 +33,6 @@ IKernelBuilder kernelBuilder = Kernel
 Kernel kernel = kernelBuilder.Build();
 kernel.Plugins.AddFromType<ProductsPlugin>("Products");
 
-var tokenUsageService = new TokenUsageService();
-
 Console.WriteLine("Welcome to agentic shop assistant demo!");
 Console.WriteLine("Available token management strategies are:");
 Console.WriteLine("1. No management");
@@ -53,6 +51,16 @@ while (strategy < 1 || strategy > 4)
 }
 
 Console.WriteLine($"You have selected strategy {strategy}.");
+
+string? experimentName = null;
+while (experimentName == null)
+{
+    Console.WriteLine("Write experiment name and press enter to start:");
+    experimentName = Console.ReadLine();
+}
+
+var tokenUsageService = new TokenUsageService(experimentName);
+
 Console.WriteLine("Name a product or ask for a recommendation in any language.");
 
 bool useSummarization = strategy == 2 || strategy == 4;

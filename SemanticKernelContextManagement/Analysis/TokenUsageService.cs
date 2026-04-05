@@ -6,8 +6,14 @@ namespace SemanticKernelContextManagement.Analysis
     {
         private readonly string resultsPath = Path.Combine(AppContext.BaseDirectory, "Results");
         private readonly DateTimeOffset sessionTimeStamp = DateTimeOffset.UtcNow;
-        private IDisposable? sub;
         private int currentTurnIndex;
+        private string experimentName;
+        private IDisposable? sub;
+
+        public TokenUsageService(string experimentName)
+        {
+            this.experimentName = experimentName;
+        }
 
         public void Dispose()
         {
@@ -23,18 +29,18 @@ namespace SemanticKernelContextManagement.Analysis
 
         private void SaveTokenUsage(TokenUsage usage)
         {
-            string resultsFileName = $"tokenUsage_{sessionTimeStamp:yyyyMMdd_HHmmss}_{currentTurnIndex}.csv";
+            string resultsFileName = $"tokenUsage_{experimentName}_{sessionTimeStamp:yyyyMMdd_HHmmss}_{currentTurnIndex}.csv";
             var filePath = Path.Combine(resultsPath, resultsFileName);
 
             Directory.CreateDirectory(resultsPath);
             if (!File.Exists(filePath))
             {
-                File.AppendAllText(filePath, "Session,TurnIndex,InputTokens,OutputTokens,TotalTokens,Description");
+                File.AppendAllText(filePath, "Experiment,Session,TurnIndex,InputTokens,OutputTokens,TotalTokens,Description");
             }
 
             File.AppendAllText(
                 filePath,
-                $"{Environment.NewLine}{sessionTimeStamp:yyyyMMdd_HHmmss},{currentTurnIndex},{usage.InputTokens},{usage.OutputTokens},{usage.TotalTokens},{usage.Description}");
+                $"{Environment.NewLine}{experimentName},{sessionTimeStamp:yyyyMMdd_HHmmss},{currentTurnIndex},{usage.InputTokens},{usage.OutputTokens},{usage.TotalTokens},{usage.Description}");
         }
     }
 }
