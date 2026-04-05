@@ -49,6 +49,15 @@ namespace SemanticKernelContextManagement.Products.Services
                 MaskObservations();
             }
 
+            if (useSummarization)
+            {
+                var numberOfTurnsWithUser = ChatHistory.Count(c => c.Role == AuthorRole.User);
+                if (numberOfTurnsWithUser % 5 == 0)
+                {
+                    await SummarizeChatAsync();
+                }
+            }
+
             return result.Content;
         }
 
@@ -114,6 +123,11 @@ namespace SemanticKernelContextManagement.Products.Services
 
             var tokenUsage = new TokenUsage(inputSum, outputSum, totalSum, "product-recommendation");
             TokenUsage.Publish(tokenUsage);
+        }
+
+        private async Task SummarizeChatAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
