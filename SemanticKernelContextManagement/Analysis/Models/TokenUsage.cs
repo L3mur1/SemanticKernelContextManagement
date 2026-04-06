@@ -1,6 +1,6 @@
 using System.Reactive.Subjects;
 
-namespace SemanticKernelContextManagement.Models
+namespace SemanticKernelContextManagement.Analysis.Models
 {
     public record TokenUsage(
         int InputTokens,

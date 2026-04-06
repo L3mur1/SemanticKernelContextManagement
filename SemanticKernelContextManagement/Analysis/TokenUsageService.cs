@@ -1,4 +1,4 @@
-using SemanticKernelContextManagement.Models;
+using SemanticKernelContextManagement.Analysis.Models;
 
 namespace SemanticKernelContextManagement.Analysis
 {
