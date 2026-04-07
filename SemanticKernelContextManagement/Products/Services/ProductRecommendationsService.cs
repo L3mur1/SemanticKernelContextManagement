@@ -200,17 +200,7 @@ namespace SemanticKernelContextManagement.Products.Services
 
         private async Task SummarizeChatAsync()
         {
-            var systemMessage = ChatHistory.FirstOrDefault(m => m.Role == AuthorRole.System);
-            if (systemMessage is null)
-            {
-                return;
-            }
-
             var transcript = FormatConversationForSummary(ChatHistory);
-            if (string.IsNullOrWhiteSpace(transcript))
-            {
-                return;
-            }
 
             var summarizationChat = new ChatHistory();
             summarizationChat.AddSystemMessage(SummarizationSystemPrompt);
@@ -229,9 +219,8 @@ namespace SemanticKernelContextManagement.Products.Services
 
             NotifySummarizationTokenUsed(summaryResponse);
 
-            var shopSystemText = systemMessage.Content ?? string.Empty;
             ChatHistory.Clear();
-            ChatHistory.AddSystemMessage(shopSystemText);
+            ChatHistory.AddSystemMessage(SystemPrompt);
             ChatHistory.AddUserMessage("Summary of the conversation so far:\n" + summaryResponse.Content);
         }
     }
